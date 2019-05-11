@@ -41,7 +41,7 @@ public class TransactionThread extends Thread {
                 if (!checkUserInterface()) {
                     msend.generalControl("INTERFACE_SERVICE");
                 }
-                TimeUnit.SECONDS.sleep(30);
+                TimeUnit.MINUTES.sleep(10);
             }
         } catch (Exception e) {
             this.start();
