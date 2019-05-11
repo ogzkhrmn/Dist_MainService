@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class TransactionThread extends Thread {
 
@@ -37,7 +38,7 @@ public class TransactionThread extends Thread {
                 if (!checkError()) {
                     msend.generalControl("ERROR_SERVICE");
                 }
-                Thread.sleep(30000);
+                TimeUnit.SECONDS.sleep(30);
             }
         } catch (Exception e) {
             this.start();
