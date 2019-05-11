@@ -38,6 +38,9 @@ public class TransactionThread extends Thread {
                 if (!checkError()) {
                     msend.generalControl("ERROR_SERVICE");
                 }
+                if (!checkUserInterface()) {
+                    msend.generalControl("INTERFACE_SERVICE");
+                }
                 TimeUnit.SECONDS.sleep(30);
             }
         } catch (Exception e) {
@@ -84,6 +87,15 @@ public class TransactionThread extends Thread {
     private boolean checkError() {
         try {
             URL url = new URL(ApplicationProperties.getProperty("app.control.error.service"));
+            return getResponse(url).isSuccess();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean checkUserInterface() {
+        try {
+            URL url = new URL(ApplicationProperties.getProperty("app.control.user.service"));
             return getResponse(url).isSuccess();
         } catch (Exception e) {
             return false;
