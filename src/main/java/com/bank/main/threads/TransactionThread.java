@@ -21,22 +21,24 @@ public class TransactionThread extends Thread {
     @Override
     public void run() {
         try {
-            if (checkTcmb()) {
-                msend.generalControl("TCMB_SERVICE");
+            while (true) {
+                if (!checkTcmb()) {
+                    msend.generalControl("TCMB_SERVICE");
+                }
+                if (!checkSecurity()) {
+                    msend.generalControl("SECURITY_SERVICE");
+                }
+                if (!checkMail()) {
+                    msend.generalControl("MAIL_SERVICE");
+                }
+                if (!checkAccount()) {
+                    msend.generalControl("ACCOUNT_SERVICE");
+                }
+                if (!checkError()) {
+                    msend.generalControl("ERROR_SERVICE");
+                }
+                Thread.sleep(30000);
             }
-            if (checkSecurity()) {
-                msend.generalControl("SECURITY_SERVICE");
-            }
-            if (checkMail()) {
-                msend.generalControl("MAIL_SERVICE");
-            }
-            if (checkAccount()) {
-                msend.generalControl("ACCOUNT_SERVICE");
-            }
-            if (checkError()) {
-                msend.generalControl("ERROR_SERVICE");
-            }
-            Thread.sleep(30000);
         } catch (Exception e) {
             this.start();
         }
