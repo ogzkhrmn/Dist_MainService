@@ -11,6 +11,9 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.concurrent.TimeUnit;
 
 public class TransactionThread extends Thread {
@@ -40,6 +43,9 @@ public class TransactionThread extends Thread {
                 }
                 if (!checkUserInterface()) {
                     msend.generalControl("INTERFACE_SERVICE");
+                }
+                if (!checkDB()) {
+                    msend.generalControl("DB_SERVICE");
                 }
                 TimeUnit.MINUTES.sleep(10);
             }
@@ -98,6 +104,15 @@ public class TransactionThread extends Thread {
             URL url = new URL(ApplicationProperties.getProperty("app.control.user.service"));
             return getResponse(url).isSuccess();
         } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean checkDB() {
+        try (Connection connection = DriverManager.getConnection(ApplicationProperties.getProperty("db.url"),
+                ApplicationProperties.getProperty("db.user"), ApplicationProperties.getProperty("db.password"))) {
+            return true;
+        } catch (SQLException e) {
             return false;
         }
     }
