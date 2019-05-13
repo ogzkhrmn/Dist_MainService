@@ -47,7 +47,7 @@ public class TransactionThread extends Thread {
                 if (!checkDB()) {
                     msend.generalControl("DB_SERVICE");
                 }
-                TimeUnit.MINUTES.sleep(10);
+                TimeUnit.MINUTES.sleep(1);
             }
         } catch (Exception e) {
             this.start();
